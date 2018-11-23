@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/prefTitle" >
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="@string/prefScanSound"
+            android:id="@+id/spSound"
+            android:key="setScanSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="@string/prefOnScreenKeyboard"
+            android:id="@+id/spKeyboard"
+            android:key="setKeyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!--<ListPreference
+            android:id="@+id/lpSession"
+            android:defaultValue="10"
+            android:entries="@array/pref_session_values"
+            android:entryValues="@array/pref_session_key"
+            android:key="setSession"
+            android:title="@string/prefSessionTimeout" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefUpdate" >
+        <Preference android:title="@string/prefLookForUpdates"
+            android:key="setCheckUpdate"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

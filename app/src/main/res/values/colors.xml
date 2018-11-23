@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#378cf9</color>
+    <color name="colorPrimaryDark">#3b449f</color>
+    <!--<color name="colorAccent">#fc400c</color>-->
+    <color name="colorAccent">#3b449f</color>
+    <color name="selected">#f3f302</color>
+    <color name="notSelected">#00FFFFFF</color>
+    <color name="button_normal">#bdbdbd</color>
+    <color name="colorPrimaryLight">#b5e3fa</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="listview">#fbfafb</color>
+    <color name="listview1">#eeeeee</color>
+    <color name="colorGreen">#5FFF1A</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="tvDefault">#7f7f7f</color>
+</resources>

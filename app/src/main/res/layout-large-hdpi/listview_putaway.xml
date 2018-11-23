@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvIDBin"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="20A002"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvIDOuterPkg"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="2000000004"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvIDHU"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="00011011150002369581"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvHLHUID"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="2000000010"
+        android:textSize="16sp" />
+</LinearLayout>

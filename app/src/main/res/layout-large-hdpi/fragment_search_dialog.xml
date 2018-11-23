@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="480dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.ist_systems.ytdwm.Fragments.SearchDialogFragment">
+
+    <EditText
+        android:id="@+id/etSearchVal"
+        android:layout_width="460dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/hintSearch"
+        android:inputType="text" />
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTranNo"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txtDlvNo"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/tvTyp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txtDlvTyp"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txtDlvTypStat"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/tvPlant"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txtCont"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/tvSLoc"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txtVessel"
+            android:textSize="18sp"
+            android:textStyle="normal|bold" />
+    </LinearLayout> -->
+
+    <ListView
+        android:id="@+id/lvSearch"
+        android:layout_width="460dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/lv_background"
+        android:divider="@color/colorPrimaryDark"
+        android:dividerHeight="0.5dp" />
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/tvIDPONo"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="7100003571"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvIDMatNo"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="15000517-00097"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvIDBatch"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="TRBFW14N"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvIDDlvQty"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingRight="10dp"
+        android:text="4300.00"
+        android:textAlignment="textEnd"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvIDUOM"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="PC"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvVendorLot"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="DYL001X"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvIDPkgNo"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="1000003631"
+        android:textSize="18sp" />
+</LinearLayout>

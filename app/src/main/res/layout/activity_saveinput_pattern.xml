@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/txtConfirmPattern"
+            android:textSize="17sp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <com.andrognito.patternlockview.PatternLockView
+        android:id="@+id/pattern_confirm"
+        android:layout_width="310dp"
+        android:layout_height="280dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="40dp"
+        app:aspectRatio="width_bias"
+        app:aspectRatioEnabled="true"
+        app:correctStateColor="@color/colorGreen"
+        app:dotAnimationDuration="150"
+        app:normalStateColor="@color/colorBlack"
+        app:wrongStateColor="@color/colorRed" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:id="@+id/btCancel1"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/txtCancel"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btConfirm1"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/txtConfirm"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

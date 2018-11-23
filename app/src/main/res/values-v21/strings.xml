@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Whse Connect"</string>
+
+    <string name="action_logout">Logout</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="tip_action_delete">Delete Scanned Items</string>
+    <string name="hintSearch">Search for</string>
+
+    <string name="txtBin">Bin</string>
+    <string name="txtHU">HU</string>
+    <string name="txtHLHU">New T-Rack</string>
+    <string name="txtOuterPkg">Outer Pkg.</string>
+    <string name="txtConfirmTO">Confirm TO</string>
+    <string name="txtScanToDelete">Scan Items to Delete</string>
+    <string name="txtNoOfScan">No. of Pkgs Scanned</string>
+    <string name="txtSummary">Summary</string>
+    <string name="txtTotNoPkgs">Total No. of Pkgs</string>
+    <string name="txtRcvPkgs">Total Rcvd Pkgs</string>
+    <string name="txtDlvRcvd">Delivery Received</string>
+    <string name="txtUserId">User ID</string>
+    <string name="txtPassword">Password</string>
+    <string name="txtSubmit">Submit</string>
+    <string name="txtPickHU">Picking HU</string>
+    <string name="txtMatNo">Material</string>
+    <string name="txtBatch">Batch</string>
+    <string name="txtReqdQty">Reqd Qty</string>
+    <string name="txtPickQty">Pick Qty</string>
+    <string name="txtTaskList">Task List</string>
+    <string name="txtTools">Tools</string>
+    <string name="txtHelp">Help</string>
+    <string name="txtDelivery">Delivery</string>
+    <string name="txtPutAway">Put Away</string>
+    <string name="txtPicking">Picking</string>
+    <string name="txtDlvNo">Delivery No.</string>
+    <string name="txtDlvNo1">Dlv No.</string>
+    <string name="txtView">View</string>
+    <string name="txtRcvHU">Receive HU</string>
+    <string name="txtPONo">PO No.</string>
+    <string name="txtDlvQty">Dlv Qty</string>
+    <string name="txtUOM">UOM</string>
+    <string name="txtPkgNo">Pkg No.</string>
+    <string name="txtVendor">Vendor</string>
+    <string name="txtVenRef">Vendor Reference</string>
+    <string name="txtDocDt">Document Date</string>
+    <string name="txtActDt">Actual Date</string>
+    <string name="txtRcvPlant">Receiving Plant</string>
+    <string name="txtRcvSloc">Receiving SLoc</string>
+    <string name="txtContNo">Container No.</string>
+    <string name="txtPostGR">Post GR</string>
+    <string name="txtPONoItm">PO No. - Itm</string>
+    <string name="txtPOQty">PO Qty</string>
+    <string name="txtTONo">Transfer Order No.</string>
+    <string name="txtTONo1">TO No.</string>
+    <string name="txtPick">Pick</string>
+    <string name="txtDlvTyp">Type</string>
+    <string name="txtDlvTypStat">Status</string>
+    <string name="txtPlant">Plant</string>
+    <string name="txtSLoc">SLoc</string>
+    <string name="txtCreatedBy">Created By</string>
+    <string name="txtCreatedDt">Created Dt</string>
+    <string name="txtDesc">Desc</string>
+    <string name="txtWhseStock" >Whse Stock</string>
+    <string name="txtBinInquiry">Bin Stock Inquiry</string>
+    <string name="txtStocksInquiry">Stock Inquiry</string>
+    <string name="txtBinTransfer">Bin Transfer</string>
+    <string name="txtStockTrans">Stock Transfer</string>
+    <string name="txtDoStockTrans">Do Stock Transfer</string>
+    <string name="txtStorAreaCd">Stor Area</string>
+    <string name="txtAvailQty">Avail Qty</string>
+    <string name="txtDestBin">Destination. Bin</string>
+    <string name="txtCancel">Cancel</string>
+    <string name="txtShowPass">Show Password</string>
+    <string name="txtRollNo">Roll No</string>
+    <string name="txtDyeLot">Dye Lot</string>
+    <string name="txtColor">Color</string>
+    <string name="txtFabTon">Fab Toning</string>
+    <string name="txtHLHUID">HL HUID</string>
+    <string name="txtQty">Qty</string>
+    <string name="txtIssuance">Issuance</string>
+    <string name="txtIssue">Issue</string>
+    <string name="txtIssQty">Issue Qty</string>
+    <string name="txtCont">Cont No.</string>
+    <string name="txtVessel">Vessel</string>
+    <string name="txtIONo">IO No.</string>
+    <string name="txtTrans">Trans No.</string>
+    <string name="txtTransaction">Transaction No.</string>
+    <string name="txtTransactions">Transaction Log</string>
+    <string name="txtChangePattern">Change Pattern</string>
+    <string name="txtTotHU">Total HU</string>
+    <string name="txtBinHLHUID">Bin/TRK/HU</string>
+    <string name="txtReject">Reject</string>
+    <string name="txtSourceHU">Source HU</string>
+    <string name="txtPattern">Draw your unlock pattern</string>
+    <string name="txtConfirmPattern">Draw the pattern again to confirm it</string>
+    <string name="txtContinue">Continue</string>
+    <string name="txtConfirm">Confirm</string>
+    <string name="txtTLCont">Cont No.:</string>
+    <string name="txtTyp">Trans Type:</string>
+    <string name="txtRemarks">Remarks:</string>
+    <string name="txtCreatedby">Created By:</string>
+    <string name="txtDate">Created Date:</string>
+    <string name="txtVes">Vessel:</string>
+    <string name="txtViewPendingHU">View Pending HU for Scan</string>
+    <string name="txtPendingHU">Pending HU for Scan</string>
+    <string name="txtADMatID">AD Mat ID</string>
+    <string name="txtReqdDt">Reqd. Date</string>
+    <string name="txtERPIO">IO No.</string>
+
+    <string name="prefTitle">App Settings</string>
+    <string name="prefSessionTimeout">Session Timeout</string>
+    <string name="prefSessionSumm">Session is set to: </string>
+    <string name="prefScanSound">Enable Scan Sound</string>
+    <string name="prefOnScreenKeyboard">Enable On-Screen Keyboard</string>
+    <string name="prefUpdate">Updates</string>
+    <string name="prefLookForUpdates">Check for Updates</string>
+    <string name="txtNewQty">Enter New Qty</string>
+    <string name="txtStocksInqMatNo">Stock Inquiry by Material</string>
+    <string name="txtRsvNo">Rsv No.</string>
+
+    <string-array name="pref_session_values">
+        <item>5 Minutes</item>
+        <item>10 Minutes</item>
+        <item>20 Minutes</item>
+        <item>30 Minutes</item>
+    </string-array>
+
+    <string-array name="pref_session_key">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+</resources>

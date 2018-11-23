@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ist_systems.ytdwm">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_wconnect"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.InbDlvViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InbDlvRcvHUActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InbDlvRcvHUPerContActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InbDlvPutAwayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvPickAccFreeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvPickAccDirActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvPickFabDirActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvPickFabFreeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.IntWhseBinTransActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.IntWhseStocksInquiryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InbDlvPutAway1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InbDlvPutAwayPerContActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvIssuanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.OutDlvIssuance1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeInputNewPattern"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeSaveInputPattern"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activities.OutDlvRejectActivity" />
+        <activity android:name=".Activities.IntWhseStocksInqMaterialActivity" />
+    </application>
+
+</manifest>
