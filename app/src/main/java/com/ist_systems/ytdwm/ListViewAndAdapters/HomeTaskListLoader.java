@@ -38,10 +38,13 @@ public class HomeTaskListLoader extends AsyncTaskLoader<List<HomeTaskList>> {
             String line;
 
             try {
-
+                String strUser = GlobalVariables.gblUserID;
                 JSONObject jObject = new JSONObject();
                 jObject.put("PassCode", "letmein");
+                jObject.put("UserID",strUser);
                 String sParam = jObject.toString();
+
+
 
                 String strUrl = GlobalVariables.gblURL + "GetTaskList.php";
 
@@ -85,7 +88,7 @@ public class HomeTaskListLoader extends AsyncTaskLoader<List<HomeTaskList>> {
 
             JSONObject jsonResponse = new JSONObject(responseString);
             JSONArray jsonMainNode = jsonResponse.optJSONArray("tasklist");
-            String TranNo, UpdMonth, UpdDay, Tag, Task, ContNo, Vessel;
+            String TranNo, UpdMonth, UpdDay, Tag, Task, ContNo, Vessel, DlvNo,RsvNo,IONo;
 
             for (int i = 0; i < jsonMainNode.length(); i++) {
                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
@@ -96,8 +99,26 @@ public class HomeTaskListLoader extends AsyncTaskLoader<List<HomeTaskList>> {
                 Task = jsonChildNode.optString("Task");
                 ContNo = jsonChildNode.optString("ContNo");
                 Vessel = jsonChildNode.optString("Vessel");
+                DlvNo = jsonChildNode.optString("DlvNo");
+                RsvNo = jsonChildNode.optString("RsvNo");
+                IONo = jsonChildNode.optString("IONo");
 
-                taskLists.add(new HomeTaskList(TranNo, UpdMonth, UpdDay, Tag, Task, ContNo, Vessel));
+
+                switch (Tag)
+                {
+                    case "IDRcv1":
+                    case "IDPost":
+                    case "PutAway1":
+                        taskLists.add(new HomeTaskList(TranNo, UpdMonth, UpdDay, Tag, Task, ContNo, Vessel, "","",""));
+                        break;
+                    case "Picking":
+                    case "ODIssuance":
+                        taskLists.add(new HomeTaskList(TranNo, UpdMonth, UpdDay, Tag, Task, ContNo, Vessel, DlvNo,RsvNo, IONo));
+                        break;
+
+                }
+
+                Log.d("TestLog", TranNo+" "+ DlvNo+" "+RsvNo);
             }
         } catch (Exception e) {
             Log.e("YTLog " + this.getClass().getSimpleName(), "JSon" + e.toString());

@@ -66,6 +66,62 @@ public class HomeTaskListAdapter extends BaseAdapter {
         tvContNo.setText(homeTaskList.ContNo);
         tvVessel.setText(homeTaskList.Vessel);
 
+        TextView tvDlv = convertView.findViewById(R.id.tvDlvNoC);
+        TextView tvRsv = convertView.findViewById(R.id.TvRsvNo);
+        TextView tvIO = convertView.findViewById(R.id.tvIONo);
+
+        TextView tvLCont = convertView.findViewById(R.id.tvlbCont); //Cont Label
+        TextView tvLVess = convertView.findViewById(R.id.tvlbVess);//Vessel Label
+
+        TextView tvLDlv = convertView.findViewById(R.id.tvDlvN); //DlvNo Label
+        TextView tvLRsv = convertView.findViewById(R.id.tvRsvL); //RSVNo Label
+        TextView tvLIONo = convertView.findViewById(R.id.tvlbIONo); // IONO Label
+
+        tvMonth.setText(homeTaskList.Month);
+        tvDay.setText(homeTaskList.Day);
+        tvTask.setText(homeTaskList.Task);
+        tvTranNo.setText(homeTaskList.TranNo);
+        tvTag.setText(homeTaskList.Tag);
+
+        tvContNo.setText(homeTaskList.ContNo);
+        tvVessel.setText(homeTaskList.Vessel);
+
+        tvDlv.setText(homeTaskList.DlvNo);
+        tvRsv.setText(homeTaskList.RsvNo);
+        tvIO.setText(homeTaskList.IONo);
+
+
+        switch (tvTag.getText().toString())
+        {
+            case "IDRcv1":
+            case "IDPost":
+            case "PutAway1":
+                tvLCont.setVisibility(View.VISIBLE);
+                tvLVess.setVisibility(View.VISIBLE);
+                tvLIONo.setVisibility(View.GONE);
+                tvLDlv.setVisibility(View.GONE);
+                tvLRsv.setVisibility(View.GONE);
+                break;
+            case "Picking":
+                tvLDlv.setVisibility(View.VISIBLE);
+                tvLRsv.setVisibility(View.VISIBLE);
+                tvDlv.setVisibility(View.VISIBLE);
+                tvLIONo.setVisibility(View.VISIBLE);
+                tvLCont.setVisibility(View.GONE);
+                tvLVess.setVisibility(View.GONE);
+                break;
+            case "ODIssuance":
+                tvLRsv.setVisibility(View.VISIBLE);
+                tvLIONo.setVisibility(View.VISIBLE);
+                tvLDlv.setVisibility(View.GONE);
+                tvDlv.setVisibility(View.GONE);
+                tvLCont.setVisibility(View.GONE);
+                tvLVess.setVisibility(View.GONE);
+                break;
+
+
+        }
+
         if (position % 2 == 1)
             convertView.setBackgroundColor(context.getResources().getColor(R.color.listview));
         else
