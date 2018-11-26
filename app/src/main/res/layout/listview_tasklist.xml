@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="80dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -45,11 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Lorem ipsum dolor sit amet, ut quo movet scripta epicurei"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="15sp" />
+                android:layout_marginTop="0dp"
+                android:text="Lorem ipsum dolor sit amet, ut quo movet "
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <LinearLayout
+                android:id="@+id/LyContVel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -88,6 +89,7 @@
 
 
             <LinearLayout
+                android:id="@+id/LyRsvIO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -125,6 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LyDlv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"

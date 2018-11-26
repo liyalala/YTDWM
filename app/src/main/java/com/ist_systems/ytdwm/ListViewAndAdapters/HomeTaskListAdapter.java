@@ -1,10 +1,12 @@
 package com.ist_systems.ytdwm.ListViewAndAdapters;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ist_systems.ytdwm.R;
@@ -77,6 +79,10 @@ public class HomeTaskListAdapter extends BaseAdapter {
         TextView tvLRsv = convertView.findViewById(R.id.tvRsvL); //RSVNo Label
         TextView tvLIONo = convertView.findViewById(R.id.tvlbIONo); // IONO Label
 
+        LinearLayout LyContV = convertView.findViewById(R.id.LyContVel); // Cont & Vessel Layout
+        LinearLayout LyRsvI = convertView.findViewById(R.id.LyRsvIO); // RSV & IO
+        LinearLayout LyDl = convertView.findViewById(R.id.LyDlv);
+
         tvMonth.setText(homeTaskList.Month);
         tvDay.setText(homeTaskList.Day);
         tvTask.setText(homeTaskList.Task);
@@ -98,6 +104,10 @@ public class HomeTaskListAdapter extends BaseAdapter {
             case "PutAway1":
                 tvLCont.setVisibility(View.VISIBLE);
                 tvLVess.setVisibility(View.VISIBLE);
+                LyContV.setVisibility(View.VISIBLE);
+
+                LyDl.setVisibility(View.GONE);
+                LyRsvI.setVisibility(View.GONE);
                 tvLIONo.setVisibility(View.GONE);
                 tvLDlv.setVisibility(View.GONE);
                 tvLRsv.setVisibility(View.GONE);
@@ -107,12 +117,20 @@ public class HomeTaskListAdapter extends BaseAdapter {
                 tvLRsv.setVisibility(View.VISIBLE);
                 tvDlv.setVisibility(View.VISIBLE);
                 tvLIONo.setVisibility(View.VISIBLE);
+                LyDl.setVisibility(View.VISIBLE);
+                LyRsvI.setVisibility(View.VISIBLE);
+
+                LyContV.setVisibility(View.GONE);
                 tvLCont.setVisibility(View.GONE);
                 tvLVess.setVisibility(View.GONE);
                 break;
             case "ODIssuance":
                 tvLRsv.setVisibility(View.VISIBLE);
                 tvLIONo.setVisibility(View.VISIBLE);
+                LyRsvI.setVisibility(View.VISIBLE);
+
+                LyContV.setVisibility(View.GONE);
+                LyDl.setVisibility(View.GONE);
                 tvLDlv.setVisibility(View.GONE);
                 tvDlv.setVisibility(View.GONE);
                 tvLCont.setVisibility(View.GONE);
