@@ -15,4 +15,10 @@
     <color name="colorGreen">#5FFF1A</color>
     <color name="colorRed">#FF0000</color>
     <color name="tvDefault">#7f7f7f</color>
+
+    <color name="IDRcv1">#a7ffeb</color>
+    <color name="IDPost">#80d8ff</color>
+    <color name="PutAway1">#8c9eff</color>
+    <color name="Picking">#ffe0b2</color>
+    <color name="ODIssuance">#ff8a80</color>
 </resources>

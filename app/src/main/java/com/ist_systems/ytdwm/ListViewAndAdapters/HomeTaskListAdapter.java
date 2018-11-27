@@ -1,7 +1,6 @@
 package com.ist_systems.ytdwm.ListViewAndAdapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +81,7 @@ public class HomeTaskListAdapter extends BaseAdapter {
         LinearLayout LyContV = convertView.findViewById(R.id.LyContVel); // Cont & Vessel Layout
         LinearLayout LyRsvI = convertView.findViewById(R.id.LyRsvIO); // RSV & IO
         LinearLayout LyDl = convertView.findViewById(R.id.LyDlv);
+        LinearLayout lyColorInd = convertView.findViewById(R.id.lytColorInd);
 
         tvMonth.setText(homeTaskList.Month);
         tvDay.setText(homeTaskList.Day);
@@ -97,10 +97,33 @@ public class HomeTaskListAdapter extends BaseAdapter {
         tvIO.setText(homeTaskList.IONo);
 
 
-        switch (tvTag.getText().toString())
-        {
+        switch (tvTag.getText().toString()) {
             case "IDRcv1":
+                tvLCont.setVisibility(View.VISIBLE);
+                tvLVess.setVisibility(View.VISIBLE);
+                LyContV.setVisibility(View.VISIBLE);
+
+                LyDl.setVisibility(View.GONE);
+                LyRsvI.setVisibility(View.GONE);
+                tvLIONo.setVisibility(View.GONE);
+                tvLDlv.setVisibility(View.GONE);
+                tvLRsv.setVisibility(View.GONE);
+
+                lyColorInd.setBackgroundColor(context.getResources().getColor(R.color.IDRcv1));
+                break;
             case "IDPost":
+                tvLCont.setVisibility(View.VISIBLE);
+                tvLVess.setVisibility(View.VISIBLE);
+                LyContV.setVisibility(View.VISIBLE);
+
+                LyDl.setVisibility(View.GONE);
+                LyRsvI.setVisibility(View.GONE);
+                tvLIONo.setVisibility(View.GONE);
+                tvLDlv.setVisibility(View.GONE);
+                tvLRsv.setVisibility(View.GONE);
+
+                lyColorInd.setBackgroundColor(context.getResources().getColor(R.color.IDPost));
+                break;
             case "PutAway1":
                 tvLCont.setVisibility(View.VISIBLE);
                 tvLVess.setVisibility(View.VISIBLE);
@@ -111,6 +134,8 @@ public class HomeTaskListAdapter extends BaseAdapter {
                 tvLIONo.setVisibility(View.GONE);
                 tvLDlv.setVisibility(View.GONE);
                 tvLRsv.setVisibility(View.GONE);
+
+                lyColorInd.setBackgroundColor(context.getResources().getColor(R.color.PutAway1));
                 break;
             case "Picking":
                 tvLDlv.setVisibility(View.VISIBLE);
@@ -123,6 +148,8 @@ public class HomeTaskListAdapter extends BaseAdapter {
                 LyContV.setVisibility(View.GONE);
                 tvLCont.setVisibility(View.GONE);
                 tvLVess.setVisibility(View.GONE);
+
+                lyColorInd.setBackgroundColor(context.getResources().getColor(R.color.Picking));
                 break;
             case "ODIssuance":
                 tvLRsv.setVisibility(View.VISIBLE);
@@ -135,9 +162,9 @@ public class HomeTaskListAdapter extends BaseAdapter {
                 tvDlv.setVisibility(View.GONE);
                 tvLCont.setVisibility(View.GONE);
                 tvLVess.setVisibility(View.GONE);
+
+                lyColorInd.setBackgroundColor(context.getResources().getColor(R.color.ODIssuance));
                 break;
-
-
         }
 
         if (position % 2 == 1)
