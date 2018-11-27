@@ -46,7 +46,7 @@ public class HomeTaskListLoader extends AsyncTaskLoader<List<HomeTaskList>> {
 
 
 
-                String strUrl = GlobalVariables.gblURL + "GetTaskList.php";
+                String strUrl = GlobalVariables.gblURL + "GetTaskListNew.php";
 
                 URL url = new URL(strUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
