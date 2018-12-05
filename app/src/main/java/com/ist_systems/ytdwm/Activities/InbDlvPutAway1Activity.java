@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Fragments.SummaryFragment;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterDestBin;
 import com.ist_systems.ytdwm.ListViewAndAdapters.BarcodeListPutAway;
 import com.ist_systems.ytdwm.R;
 import com.ist_systems.ytdwm.Util;
@@ -64,7 +66,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
     TextInputLayout tilBin;
     TextInputLayout tilNewHUID;
     TextInputLayout tilHUID;
-    EditText etBinCd;
+    AutoCompleteTextView etBinCd;
     EditText etHU;
     EditText etHLHU;
     Button btConfirmTO;
@@ -144,12 +146,17 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
 
         Initialize();
 
+        etBinCd.setAdapter(new SuggestionAdapterDestBin(this,etBinCd.getText().toString()));
+        etBinCd.setThreshold(2);
+
         etBinCd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     strScanObj = "BinCd";
                     tilBin.setBackgroundResource(R.drawable.et_focused);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    etBinCd.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else
                     tilBin.setBackgroundResource(0);
             }

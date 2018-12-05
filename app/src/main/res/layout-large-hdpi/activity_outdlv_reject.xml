@@ -35,7 +35,8 @@
                 android:editable="false"
                 android:hint="@string/txtDestBin"
                 android:inputType="none"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:completionThreshold="2" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

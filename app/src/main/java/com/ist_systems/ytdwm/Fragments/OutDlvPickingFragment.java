@@ -23,6 +23,7 @@ import com.ist_systems.ytdwm.Activities.OutDlvPickAccFreeActivity;
 import com.ist_systems.ytdwm.Activities.OutDlvPickFabDirActivity;
 import com.ist_systems.ytdwm.Activities.OutDlvPickFabFreeActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterODTONo;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -73,6 +74,10 @@ public class OutDlvPickingFragment extends Fragment {
         btPick = view.findViewById(R.id.btODPickView);
         btReject = view.findViewById(R.id.btODReject);
         imgSearch = view.findViewById(R.id.imgSearch);
+
+        actTONo.setAdapter(new SuggestionAdapterODTONo(getActivity(),actTONo.getText().toString()));
+        actTONo.setThreshold(2);
+
 
         btIssue.setOnClickListener(new View.OnClickListener() {
             @Override

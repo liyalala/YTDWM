@@ -21,6 +21,8 @@ import android.widget.ImageButton;
 import com.ist_systems.ytdwm.Activities.OutDlvIssuance1Activity;
 import com.ist_systems.ytdwm.Activities.OutDlvIssuanceActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterDestBin;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterODIssuanceDlvNo;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -71,6 +73,9 @@ public class OutDlvIssuanceFragment extends Fragment {
         btPick = view.findViewById(R.id.btODPick);
         btReject = view.findViewById(R.id.btODReject);
         imgSearch = view.findViewById(R.id.imgSearch);
+
+        actDlvNo.setAdapter(new SuggestionAdapterODIssuanceDlvNo(getActivity(),actDlvNo.getText().toString()));
+        actDlvNo.setThreshold(2);
 
         btPick.setOnClickListener(new View.OnClickListener() {
             @Override

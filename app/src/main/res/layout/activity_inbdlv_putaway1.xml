@@ -25,15 +25,13 @@
             android:layout_marginRight="10dp"
             android:padding="3dp">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/etIDBin"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="beforeDescendants"
-                android:editable="false"
                 android:focusableInTouchMode="true"
                 android:hint="@string/txtDestBin"
-                android:inputType="none"
+                android:inputType="text"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 

@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Fragments.SummaryFragment;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterAdMatId;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterBatch;
 import com.ist_systems.ytdwm.ListViewAndAdapters.StockInquiry;
 import com.ist_systems.ytdwm.ListViewAndAdapters.StockInquiryAdapter;
 import com.ist_systems.ytdwm.R;
@@ -43,8 +46,8 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
 
     ListView lvbinInquiry;
     StockInquiryAdapter stockInquiryAdapter;
-    EditText etMatNo;
-    EditText etBatch;
+    AutoCompleteTextView etMatNo;
+    AutoCompleteTextView etBatch;
     Button btSummary;
     Button btView;
     AlertDialog alrtLog;
@@ -64,6 +67,15 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
         etBatch = findViewById(R.id.etBatch);
         btSummary = findViewById(R.id.btSummary);
         btView = findViewById(R.id.btView);
+
+        etBatch.setAdapter(new SuggestionAdapterBatch(this,etBatch.getText().toString()));
+        etBatch.setThreshold(2);
+        etBatch.getCompletionHint();
+
+
+        etMatNo.setAdapter(new SuggestionAdapterAdMatId(this,etMatNo.getText().toString()));
+        etMatNo.setThreshold(2);
+        etBatch.getCompletionHint();
 
         etMatNo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

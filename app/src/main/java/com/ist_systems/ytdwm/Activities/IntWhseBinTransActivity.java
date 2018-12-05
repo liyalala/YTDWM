@@ -15,7 +15,9 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -23,6 +25,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,7 +37,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.DestBinList;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterDestBin;
 import com.ist_systems.ytdwm.ListViewAndAdapters.BinTransfer;
+import com.ist_systems.ytdwm.MainActivity;
 import com.ist_systems.ytdwm.R;
 import com.ist_systems.ytdwm.Util;
 
@@ -48,18 +56,20 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.pda.scan.ScanThread;
 
-public class IntWhseBinTransActivity extends AppCompatActivity {
+public class IntWhseBinTransActivity extends AppCompatActivity  {
 
     private static int sessionDepth = 0;
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
-    EditText etDestBin;
+    AutoCompleteTextView etDestBin;
     EditText etHUID;
     EditText etNewHLHUID;
     TextInputLayout tilDestBin;
@@ -79,6 +89,7 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
     private SimpleAdapter adapter = null;
     private List<BinTransfer> listBarcode = new ArrayList<>();
     private ArrayList<String> arrHU = new ArrayList<>();
+    private List<DestBinList> destBin = new ArrayList<>();
     private ScanThread scanThread;
     private KeyReceiver keyReceiver;
     @SuppressLint("HandlerLeak")
@@ -137,12 +148,21 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
 
         Initialize();
 
+
+        etDestBin.setAdapter(new SuggestionAdapterDestBin(this,etDestBin.getText().toString()));
+        etDestBin.setThreshold(2);
+
         etDestBin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     strScanObj = "DestBin";
                     tilDestBin.setBackgroundResource(R.drawable.et_focused);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    etDestBin.setInputType(InputType.TYPE_CLASS_TEXT);
+
+
+
                 } else
                     tilDestBin.setBackgroundResource(0);
             }
@@ -153,6 +173,10 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE
                         || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(etDestBin, InputMethodManager.SHOW_IMPLICIT);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    etDestBin.setInputType(InputType.TYPE_CLASS_TEXT);
 
                     strScanItem = etDestBin.getText().toString();
                     DoScan();

@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import com.ist_systems.ytdwm.Activities.InbDlvRcvHUActivity;
 import com.ist_systems.ytdwm.Activities.InbDlvViewActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterIDDlvNo;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -73,6 +74,9 @@ public class InbDlvFragment extends Fragment {
         btView = view.findViewById(R.id.btIDView);
         btRcvHU = view.findViewById(R.id.btIDRcvHU);
         imgSearch = view.findViewById(R.id.imgSearch);
+
+        actDlvNo.setAdapter(new SuggestionAdapterIDDlvNo(getActivity(),actDlvNo.getText().toString()));
+        actDlvNo.setThreshold(2);
 
         btPutAway.setOnClickListener(new View.OnClickListener() {
             @Override
