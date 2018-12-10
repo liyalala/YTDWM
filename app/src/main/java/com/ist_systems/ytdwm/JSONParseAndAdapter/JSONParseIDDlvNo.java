@@ -16,21 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSONParseIDDlvNo {
-    double current_latitude, current_longitude;
-
-    public JSONParseIDDlvNo() {
-    }
-
-    public JSONParseIDDlvNo(double current_latitude, double current_longitude) {
-        this.current_latitude = current_latitude;
-        this.current_longitude = current_longitude;
-    }
-
 
     public List<IDDlvNoList> getParseJsonWCF(String sName) {
         List<IDDlvNoList> IDDlvNoLists = new ArrayList<IDDlvNoList>();
         try {
-            String temp = sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetIDDlvNo.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");

@@ -21,7 +21,7 @@ public class JSONParseODIssuanceDlvNo {
     {
         List<ODIssuanceDlvNoList> odIssuanceDlvNoLists = new ArrayList<ODIssuanceDlvNoList>();
         try {
-            String temp=sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetODIssuanceDlvNo.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");

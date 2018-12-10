@@ -2,6 +2,7 @@ package com.ist_systems.ytdwm.JSONParseAndAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,9 @@ import java.util.Locale;
 
 public class SuggestionAdapterDestBin extends ArrayAdapter<String> implements Filterable {
 
-    protected static final String TAG = "SuggestionAdapter";
     private List<String> suggestions;
     public SuggestionAdapterDestBin(Activity context, String nameFilter) {
-        super(context, android.R.layout.simple_dropdown_item_1line);
+        super(context, android.R.layout.select_dialog_item);
         suggestions = new ArrayList<String>();
     }
 
@@ -36,47 +36,41 @@ public class SuggestionAdapterDestBin extends ArrayAdapter<String> implements Fi
     }
 
 
+    @NonNull
     @Override
     public Filter getFilter() {
-        Filter myFilter = new Filter() {
+        return new Filter()
+        {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
                 JSONParseDestBin jp=new JSONParseDestBin();
-                if (constraint != null) {
-
-                    List<DestBinList> new_suggestions =jp.getParseJsonWCF(constraint.toString());
-                    suggestions.clear();
-
-                    for (int i=0;i<new_suggestions.size();i++) {
+                suggestions.clear();
+                //constraint = constraint.toString().trim().toLowerCase();
+                List<DestBinList> new_suggestions = jp.getParseJsonWCF(constraint.toString().trim().toLowerCase());
+                suggestions.clear();
+                for (int i = 0; i < new_suggestions.size(); i++) {
+                    //suggestions.add(new_suggestions.get(i).getBatch());
+                    if (new_suggestions.get(i).getBinCd().toLowerCase().startsWith(constraint.toString().toLowerCase())){
                         suggestions.add(new_suggestions.get(i).getBinCd());
-
-                        filterResults.values = suggestions;
-                        filterResults.count = suggestions.size();
-
                     }
-
-
-
-
                 }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = suggestions;
+                filterResults.count = suggestions.size();
+
                 return filterResults;
             }
 
             @Override
-            protected void publishResults(CharSequence contraint,
-                                          FilterResults results) {
+            protected void publishResults(CharSequence contraint, FilterResults results) {
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
-                    results.values = suggestions;
                 } else {
                     notifyDataSetInvalidated();
                 }
             }
         };
-        return myFilter;
     }
-
 
 
 }

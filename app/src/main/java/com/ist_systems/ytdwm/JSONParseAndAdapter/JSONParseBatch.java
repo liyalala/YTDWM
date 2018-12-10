@@ -17,20 +17,14 @@ import java.util.List;
 
 public class JSONParseBatch {
 
-
-
     public List<BatchList> getParseJsonWCF(String sName)
     {
         List<BatchList> batchLists = new ArrayList<BatchList>();
         try {
-            String temp=sName.replace(" ", "%20");
-            URL url = new URL(GlobalVariables.gblURL + "GetBatch.php");
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
-            urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
 
+            URL url = new URL(GlobalVariables.gblURL + "GetBatch.php");
             URLConnection jc = url.openConnection();
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(jc.getInputStream()));
             String line = reader.readLine();
 

@@ -23,7 +23,7 @@ public class JSONParseODTONo {
     {
         List<ODTONoList> odtoNoLists = new ArrayList<ODTONoList>();
         try {
-            String temp=sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetODTONo.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");

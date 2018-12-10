@@ -76,7 +76,7 @@ public class InbDlvFragment extends Fragment {
         imgSearch = view.findViewById(R.id.imgSearch);
 
         actDlvNo.setAdapter(new SuggestionAdapterIDDlvNo(getActivity(),actDlvNo.getText().toString()));
-        actDlvNo.setThreshold(2);
+        actDlvNo.setThreshold(1);
 
         btPutAway.setOnClickListener(new View.OnClickListener() {
             @Override

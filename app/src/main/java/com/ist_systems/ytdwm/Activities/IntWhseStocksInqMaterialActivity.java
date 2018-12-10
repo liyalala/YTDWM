@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Fragments.SummaryFragment;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.BatchList;
 import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterAdMatId;
 import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterBatch;
 import com.ist_systems.ytdwm.ListViewAndAdapters.StockInquiry;
@@ -54,6 +55,7 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
     ProgressDialog dlDialog;
     List<StockInquiry> bininquiry = new ArrayList<>();
     String ScanType = "";
+    private ArrayList<BatchList> batchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +71,10 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
         btView = findViewById(R.id.btView);
 
         etBatch.setAdapter(new SuggestionAdapterBatch(this,etBatch.getText().toString()));
-        etBatch.setThreshold(2);
-        etBatch.getCompletionHint();
-
+        etBatch.setThreshold(1);
 
         etMatNo.setAdapter(new SuggestionAdapterAdMatId(this,etMatNo.getText().toString()));
-        etMatNo.setThreshold(2);
-        etBatch.getCompletionHint();
+        etMatNo.setThreshold(1);
 
         etMatNo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

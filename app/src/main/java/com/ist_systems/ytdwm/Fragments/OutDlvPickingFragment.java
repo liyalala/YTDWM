@@ -76,7 +76,7 @@ public class OutDlvPickingFragment extends Fragment {
         imgSearch = view.findViewById(R.id.imgSearch);
 
         actTONo.setAdapter(new SuggestionAdapterODTONo(getActivity(),actTONo.getText().toString()));
-        actTONo.setThreshold(2);
+        actTONo.setThreshold(1);
 
 
         btIssue.setOnClickListener(new View.OnClickListener() {

@@ -16,20 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSONParseAdMatID {
-    double current_latitude,current_longitude;
-    public JSONParseAdMatID(){}
-    public JSONParseAdMatID(double current_latitude,double current_longitude){
-        this.current_latitude=current_latitude;
-        this.current_longitude=current_longitude;
-    }
-
-
 
     public List<AdMatIDList> getParseJsonWCF(String sName)
     {
         List<AdMatIDList> adMatIDLists = new ArrayList<AdMatIDList>();
         try {
-            String temp=sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetAdMatId.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");

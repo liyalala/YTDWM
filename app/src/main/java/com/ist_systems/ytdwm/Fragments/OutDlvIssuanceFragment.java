@@ -75,7 +75,7 @@ public class OutDlvIssuanceFragment extends Fragment {
         imgSearch = view.findViewById(R.id.imgSearch);
 
         actDlvNo.setAdapter(new SuggestionAdapterODIssuanceDlvNo(getActivity(),actDlvNo.getText().toString()));
-        actDlvNo.setThreshold(2);
+        actDlvNo.setThreshold(1);
 
         btPick.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -150,7 +150,7 @@ public class IntWhseBinTransActivity extends AppCompatActivity  {
 
 
         etDestBin.setAdapter(new SuggestionAdapterDestBin(this,etDestBin.getText().toString()));
-        etDestBin.setThreshold(2);
+        etDestBin.setThreshold(1);
 
         etDestBin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -15,21 +15,13 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSONParseTONo {
-//    double current_latitude,current_longitude;
-//    public JSONParseTONo(){}
-//    public JSONParseTONo(double current_latitude,double current_longitude){
-//        this.current_latitude=current_latitude;
-//        this.current_longitude=current_longitude;
-//    }
+public class JSONParseIDTONo {
 
-
-
-    public List<TONoList> getParseJsonWCF(String sName)
+    public List<IDTONoList> getParseJsonWCF(String sName)
     {
-        List<TONoList> toNoLists = new ArrayList<TONoList>();
+        List<IDTONoList> IDTONoLists = new ArrayList<IDTONoList>();
         try {
-            String temp=sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetTONo.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -44,14 +36,14 @@ public class JSONParseTONo {
             JSONArray jsonArray = jsonResponse.getJSONArray("TONoSearch");
             for(int i = 0; i < jsonArray.length(); i++){
                 JSONObject r = jsonArray.getJSONObject(i);
-                toNoLists.add(new TONoList(r.getString("TONo")));
+                IDTONoLists.add(new IDTONoList(r.getString("TONo")));
             }
         } catch (Exception e1) {
             // TODO Auto-generated catch block
             Log.e("YTLog" + getClass().getSimpleName(), e1.toString());
             e1.printStackTrace();
         }
-        return toNoLists;
+        return IDTONoLists;
 
     }
 

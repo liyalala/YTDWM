@@ -21,7 +21,7 @@ import android.widget.ImageButton;
 
 import com.ist_systems.ytdwm.Activities.InbDlvPutAway1Activity;
 import com.ist_systems.ytdwm.GlobalVariables;
-import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterTONo;
+import com.ist_systems.ytdwm.JSONParseAndAdapter.SuggestionAdapterIDTONo;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -72,8 +72,8 @@ public class InbDlvPutAwayFragment extends Fragment {
         btPutAway = view.findViewById(R.id.btIDPutAway1);
         imgSearch = view.findViewById(R.id.imgSearch);
 
-        actIDTONoSearch.setAdapter(new SuggestionAdapterTONo(getActivity(),actIDTONoSearch.getText().toString()));
-        actIDTONoSearch.setThreshold(2);
+        actIDTONoSearch.setAdapter(new SuggestionAdapterIDTONo(getActivity(),actIDTONoSearch.getText().toString()));
+        actIDTONoSearch.setThreshold(1);
 
         btDlv.setOnClickListener(new View.OnClickListener() {
             @Override

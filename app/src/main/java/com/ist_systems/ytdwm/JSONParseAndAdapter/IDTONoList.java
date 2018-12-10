@@ -1,10 +1,10 @@
 package com.ist_systems.ytdwm.JSONParseAndAdapter;
 
 
-public class TONoList {
+public class IDTONoList {
     public String TONo;
 
-    public TONoList(String toNo) {
+    public IDTONoList(String toNo) {
         this.TONo = toNo;
     }
 

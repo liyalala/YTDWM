@@ -1,6 +1,7 @@
 package com.ist_systems.ytdwm.JSONParseAndAdapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
@@ -9,7 +10,6 @@ import java.util.List;
 
 public class SuggestionAdapterAdMatId extends ArrayAdapter<String> {
 
-    protected static final String TAG = "SuggestionAdapter";
     private List<String> suggestions;
     public SuggestionAdapterAdMatId(Activity context, String nameFilter) {
         super(context, android.R.layout.select_dialog_item);
@@ -26,33 +26,33 @@ public class SuggestionAdapterAdMatId extends ArrayAdapter<String> {
         return suggestions.get(index);
     }
 
+    @NonNull
     @Override
     public Filter getFilter() {
-        Filter myFilter = new Filter() {
+        return new Filter()
+        {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
                 JSONParseAdMatID jp=new JSONParseAdMatID();
-                if (constraint != null) {
-                    // A class that queries a web API, parses the data and
-                    // returns an ArrayList<GoEuroGetSet>
-                    List<AdMatIDList> new_suggestions =jp.getParseJsonWCF(constraint.toString());
-                    suggestions.clear();
-                    for (int i=0;i<new_suggestions.size();i++) {
+                suggestions.clear();
+                //constraint = constraint.toString().trim().toLowerCase();
+                List<AdMatIDList> new_suggestions = jp.getParseJsonWCF(constraint.toString().trim().toLowerCase());
+                suggestions.clear();
+                for (int i = 0; i < new_suggestions.size(); i++) {
+                    //suggestions.add(new_suggestions.get(i).getBatch());
+                    if (new_suggestions.get(i).getAdMatid().toLowerCase().startsWith(constraint.toString().toLowerCase())){
                         suggestions.add(new_suggestions.get(i).getAdMatid());
                     }
-
-                    // Now assign the values and count to the FilterResults
-                    // object
-                    filterResults.values = suggestions;
-                    filterResults.count = suggestions.size();
                 }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = suggestions;
+                filterResults.count = suggestions.size();
+
                 return filterResults;
             }
 
             @Override
-            protected void publishResults(CharSequence contraint,
-                                          FilterResults results) {
+            protected void publishResults(CharSequence contraint, FilterResults results) {
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
                 } else {
@@ -60,7 +60,5 @@ public class SuggestionAdapterAdMatId extends ArrayAdapter<String> {
                 }
             }
         };
-        return myFilter;
     }
-
 }

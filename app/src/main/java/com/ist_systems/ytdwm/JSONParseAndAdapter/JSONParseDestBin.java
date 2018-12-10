@@ -17,13 +17,11 @@ import java.util.List;
 
 public class JSONParseDestBin {
 
-
-
     public List<DestBinList> getParseJsonWCF(String sName)
     {
         List<DestBinList> binLists = new ArrayList<DestBinList>();
         try {
-            String temp=sName.replace(" ", "%20");
+
             URL url = new URL(GlobalVariables.gblURL + "GetDestBin.php");
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");

@@ -147,7 +147,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
         Initialize();
 
         etBinCd.setAdapter(new SuggestionAdapterDestBin(this,etBinCd.getText().toString()));
-        etBinCd.setThreshold(2);
+        etBinCd.setThreshold(1);
 
         etBinCd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
