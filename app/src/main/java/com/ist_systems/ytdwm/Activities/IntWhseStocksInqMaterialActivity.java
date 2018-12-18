@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,13 +45,15 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
 
     ListView lvbinInquiry;
     StockInquiryAdapter stockInquiryAdapter;
-    EditText etMatNo;
-    EditText etBatch;
+    AutoCompleteTextView etMatNo;
+    AutoCompleteTextView etBatch;
     Button btSummary;
     Button btView;
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
     List<StockInquiry> bininquiry = new ArrayList<>();
+    List<String> lADMatId = new ArrayList<>();
+    List<String> lBatch = new ArrayList<>();
     String ScanType = "";
 
     @Override
@@ -136,6 +140,8 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
                 }
             }
         });
+
+        new PHPGetAutoCompleteList().execute();
     }
 
     private class PHPGetBinInquiry extends AsyncTask<String, Void, String> {
@@ -268,6 +274,137 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
 
                     stockInquiryAdapter = new StockInquiryAdapter(IntWhseStocksInqMaterialActivity.this, bininquiry, ScanType);
                     lvbinInquiry.setAdapter(stockInquiryAdapter);
+                } else {
+                    Toast.makeText(IntWhseStocksInqMaterialActivity.this, "No Data Found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            dlDialog.dismiss();
+
+        }
+    }
+
+    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
+        Boolean bError = false;
+        String strMsg = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String responseString = null;
+            String line;
+
+            try {
+                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
+                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("PassCode", "letmein");
+                jsonObject.put("sType", "ADMatIDBatch");
+                String message = jsonObject.toString();
+
+                Log.e("YTLog " + this.getClass().getSimpleName(), message);
+                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
+                os.write(message.getBytes());
+                os.flush();
+
+                InputStream is = urlConnection.getInputStream();
+                Reader reader = new InputStreamReader(is);
+                char[] buf = new char[GlobalVariables.gblBuffer];
+                int read;
+                StringBuffer sb = new StringBuffer();
+
+                while ((read = reader.read(buf)) > 0) {
+                    sb.append(buf, 0, read);
+                }
+
+                is.close();
+                urlConnection.disconnect();
+
+                responseString = sb.toString();
+            } catch (Exception e) {
+                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
+
+                bError = true;
+                strMsg = e.toString();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dlDialog = ProgressDialog.show(IntWhseStocksInqMaterialActivity.this, "Please wait", "Fetching data...");
+        }
+
+        @Override
+        protected void onPostExecute(String resString) {
+            super.onPostExecute(resString);
+
+            if (bError) {
+
+                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
+                    strMsg = "Network Connection Failed.";
+
+                alrtLog = new AlertDialog.Builder(IntWhseStocksInqMaterialActivity.this).setMessage(strMsg)
+                        .setNegativeButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .show();
+            } else {
+                if (resString != null) {
+                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(resString);
+                        String ADMatId, Batch;
+
+                        if (!jsonResponse.getString("AdMatId").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("AdMatId");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                ADMatId = jsonChildNode.optString("Ad_Mat_Id");
+
+                                lADMatId.add(ADMatId);
+                            }
+                        }
+
+                        if (!jsonResponse.getString("Batch").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("Batch");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                Batch = jsonChildNode.optString("Batch");
+
+                                lBatch.add(Batch);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (lADMatId.size() > 0) {
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                (IntWhseStocksInqMaterialActivity.this, android.R.layout.select_dialog_item, lADMatId);
+                        etMatNo.setAdapter(adapter1);
+                        etMatNo.setThreshold(1);
+                    }
+
+                    if (lBatch.size() > 0) {
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                (IntWhseStocksInqMaterialActivity.this, android.R.layout.select_dialog_item, lBatch);
+                        etBatch.setAdapter(adapter1);
+                        etBatch.setThreshold(1);
+                    }
                 } else {
                     Toast.makeText(IntWhseStocksInqMaterialActivity.this, "No Data Found.", Toast.LENGTH_LONG).show();
                 }

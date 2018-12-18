@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/etMatNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/etBatch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
