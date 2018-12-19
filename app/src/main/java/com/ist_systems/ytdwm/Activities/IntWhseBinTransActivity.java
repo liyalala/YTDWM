@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,7 +61,7 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
     private static int sessionDepth = 0;
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
-    EditText etDestBin;
+    AutoCompleteTextView etDestBin;
     EditText etHUID;
     EditText etNewHLHUID;
     TextInputLayout tilDestBin;
@@ -76,6 +78,7 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
     Boolean onDeleteMode = false;
     Boolean forReject = false;
     SharedPreferences prefs;
+    List<String> lBin = new ArrayList<>();
     private SimpleAdapter adapter = null;
     private List<BinTransfer> listBarcode = new ArrayList<>();
     private ArrayList<String> arrHU = new ArrayList<>();
@@ -143,6 +146,8 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
                 if (hasFocus) {
                     strScanObj = "DestBin";
                     tilDestBin.setBackgroundResource(R.drawable.et_focused);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    etDestBin.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else
                     tilDestBin.setBackgroundResource(0);
             }
@@ -258,6 +263,8 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
                 }
             }
         });
+
+        new PHPGetAutoCompleteList().execute();
     }
 
     @Override
@@ -955,4 +962,122 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
             }
         }
     }
+
+    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
+        Boolean bError = false;
+        String strMsg = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String responseString = null;
+            String line;
+
+            try {
+                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
+                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("PassCode", "letmein");
+                jsonObject.put("sType", "BinTransfer");
+                String message = jsonObject.toString();
+
+                Log.e("YTLog " + this.getClass().getSimpleName(), message);
+                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
+                os.write(message.getBytes());
+                os.flush();
+
+                InputStream is = urlConnection.getInputStream();
+                Reader reader = new InputStreamReader(is);
+                char[] buf = new char[GlobalVariables.gblBuffer];
+                int read;
+                StringBuffer sb = new StringBuffer();
+
+                while ((read = reader.read(buf)) > 0) {
+                    sb.append(buf, 0, read);
+                }
+
+                is.close();
+                urlConnection.disconnect();
+
+                responseString = sb.toString();
+            } catch (Exception e) {
+                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
+
+                bError = true;
+                strMsg = e.toString();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dlDialog = ProgressDialog.show(IntWhseBinTransActivity.this, "Please wait", "Fetching data...");
+        }
+
+        @Override
+        protected void onPostExecute(String resString) {
+            super.onPostExecute(resString);
+
+            if (bError) {
+
+                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
+                    strMsg = "Network Connection Failed.";
+
+                alrtLog = new AlertDialog.Builder(IntWhseBinTransActivity.this).setMessage(strMsg)
+                        .setNegativeButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .show();
+            } else {
+                if (resString != null) {
+                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(resString);
+                        String BinCd;
+
+                        if (!jsonResponse.getString("BinCd").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                BinCd = jsonChildNode.optString("BinCd");
+
+                                lBin.add(BinCd);
+                            }
+                        }
+
+                        if (lBin.size() > 0) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                    (IntWhseBinTransActivity.this, android.R.layout.select_dialog_item, lBin);
+                            etDestBin.setAdapter(adapter1);
+                            etDestBin.setThreshold(1);
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    Toast.makeText(IntWhseBinTransActivity.this, "No Data Found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            dlDialog.dismiss();
+
+        }
+    }
+
 }

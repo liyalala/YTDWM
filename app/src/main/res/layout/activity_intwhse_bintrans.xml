@@ -28,13 +28,12 @@
             android:padding="3dp"
             android:id="@+id/tilBin">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/etDestBin"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:editable="false"
                 android:hint="@string/txtDestBin"
-                android:inputType="none"
+                android:inputType="text"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 

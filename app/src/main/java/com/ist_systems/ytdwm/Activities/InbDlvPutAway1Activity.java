@@ -16,7 +16,9 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +36,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ist_systems.ytdwm.CheckNetwork;
 import com.ist_systems.ytdwm.Fragments.SummaryFragment;
 import com.ist_systems.ytdwm.GlobalVariables;
 import com.ist_systems.ytdwm.ListViewAndAdapters.BarcodeListPutAway;
@@ -64,7 +69,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
     TextInputLayout tilBin;
     TextInputLayout tilNewHUID;
     TextInputLayout tilHUID;
-    EditText etBinCd;
+    AutoCompleteTextView etBinCd;
     EditText etHU;
     EditText etHLHU;
     Button btConfirmTO;
@@ -79,6 +84,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
     Boolean onDeleteMode = false;
     Boolean destroy = true;
     List<Map<String, String>> listMap;
+    List<String> lBin = new ArrayList<>();
     SharedPreferences prefs;
     private SimpleAdapter adapter = null;
     private List<BarcodeListPutAway> listBarcode = new ArrayList<>();
@@ -144,16 +150,22 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
 
         Initialize();
 
+
+
         etBinCd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     strScanObj = "BinCd";
                     tilBin.setBackgroundResource(R.drawable.et_focused);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    etBinCd.setInputType(InputType.TYPE_CLASS_TEXT);
+
                 } else
                     tilBin.setBackgroundResource(0);
             }
         });
+
 
         etBinCd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -254,7 +266,10 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
             }
         });
 
+
         new PHPOnloadPutAway().execute();
+
+
         /*if ((new CheckNetwork(InbDlvPutAway1Activity.this)).isConnectingToInternet()) {
             new PHPOnloadPutAway().execute();
         } else {
@@ -270,7 +285,10 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                     .setCancelable(false)
                     .show();
         }*/
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -840,6 +858,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                 } else {
                     strAlertMsg = "Error Encountered.";
                 }
@@ -871,7 +890,9 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                 Log.e("YTLog " + this.getClass().getSimpleName(), e.toString());
 
             }
+            new PHPGetAutoCompleteList().execute();
         }
+
     }
 
     private class PHPUnLockPutAway extends AsyncTask<String, Void, String> {
@@ -1475,4 +1496,129 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
             }
         }
     }
+
+
+    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
+        Boolean bError = false;
+        String strMsg = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String responseString = null;
+            String line;
+
+            try {
+                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
+                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("PassCode", "letmein");
+                jsonObject.put("sType", "PutAwayBin");
+                String message = jsonObject.toString();
+
+                Log.e("YTLog " + this.getClass().getSimpleName(), message);
+                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
+                os.write(message.getBytes());
+                os.flush();
+
+                InputStream is = urlConnection.getInputStream();
+                Reader reader = new InputStreamReader(is);
+                char[] buf = new char[GlobalVariables.gblBuffer];
+                int read;
+                StringBuffer sb = new StringBuffer();
+
+                while ((read = reader.read(buf)) > 0) {
+                    sb.append(buf, 0, read);
+                }
+
+                is.close();
+                urlConnection.disconnect();
+
+                responseString = sb.toString();
+            } catch (Exception e) {
+                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
+
+                bError = true;
+                strMsg = e.toString();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dlDialog = ProgressDialog.show(InbDlvPutAway1Activity.this, "Please wait", "Fetching data...");
+        }
+
+        @Override
+        protected void onPostExecute(String resString) {
+            super.onPostExecute(resString);
+
+            if (bError) {
+
+                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
+                    strMsg = "Network Connection Failed.";
+
+                alrtLog = new AlertDialog.Builder(InbDlvPutAway1Activity.this).setMessage(strMsg)
+                        .setNegativeButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .show();
+            } else {
+                if (resString != null) {
+                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(resString);
+                        String BinCd;
+
+                        if (!jsonResponse.getString("BinCd").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                BinCd = jsonChildNode.optString("BinCd");
+
+                                lBin.add(BinCd);
+                            }
+                        }
+
+                        if (lBin.size() > 0) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                    (InbDlvPutAway1Activity.this, android.R.layout.select_dialog_item, lBin);
+                            etBinCd.setAdapter(adapter1);
+                            etBinCd.setThreshold(1);
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    Toast.makeText(InbDlvPutAway1Activity.this, "No Data Found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            dlDialog.dismiss();
+
+        }
+    }
+
+
+
+
+
+
+
 }

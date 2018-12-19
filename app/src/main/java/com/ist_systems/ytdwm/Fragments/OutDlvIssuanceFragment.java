@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.ist_systems.ytdwm.Activities.IntWhseStocksInqMaterialActivity;
 import com.ist_systems.ytdwm.Activities.OutDlvIssuance1Activity;
 import com.ist_systems.ytdwm.Activities.OutDlvIssuanceActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
@@ -34,6 +37,8 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OutDlvIssuanceFragment extends Fragment {
@@ -46,6 +51,7 @@ public class OutDlvIssuanceFragment extends Fragment {
 
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
+    List<String> lDlvNo = new ArrayList<>();
 
     public OutDlvIssuanceFragment() {
         // Required empty public constructor
@@ -142,7 +148,7 @@ public class OutDlvIssuanceFragment extends Fragment {
                 ShowDialog();
             }
         });
-
+        new PHPGetAutoCompleteList().execute();
         return view;
     }
 
@@ -306,6 +312,121 @@ public class OutDlvIssuanceFragment extends Fragment {
             }
 
             dlDialog.dismiss();
+        }
+    }
+
+    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
+        Boolean bError = false;
+        String strMsg = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String responseString = null;
+            String line;
+
+            try {
+                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
+                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("PassCode", "letmein");
+                jsonObject.put("sType", "ODDlvNo");
+                String message = jsonObject.toString();
+
+                Log.e("YTLog " + this.getClass().getSimpleName(), message);
+                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
+                os.write(message.getBytes());
+                os.flush();
+
+                InputStream is = urlConnection.getInputStream();
+                Reader reader = new InputStreamReader(is);
+                char[] buf = new char[GlobalVariables.gblBuffer];
+                int read;
+                StringBuffer sb = new StringBuffer();
+
+                while ((read = reader.read(buf)) > 0) {
+                    sb.append(buf, 0, read);
+                }
+
+                is.close();
+                urlConnection.disconnect();
+
+                responseString = sb.toString();
+            } catch (Exception e) {
+                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
+
+                bError = true;
+                strMsg = e.toString();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dlDialog = ProgressDialog.show(getActivity(), "Please wait", "Fetching data...");
+        }
+
+        @Override
+        protected void onPostExecute(String resString) {
+            super.onPostExecute(resString);
+
+            if (bError) {
+
+                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
+                    strMsg = "Network Connection Failed.";
+
+                alrtLog = new AlertDialog.Builder(getActivity()).setMessage(strMsg)
+                        .setNegativeButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .show();
+            } else {
+                if (resString != null) {
+                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(resString);
+                        String DlvNo;
+
+                        if (!jsonResponse.getString("DlvNo").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("DlvNo");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                DlvNo = jsonChildNode.optString("DlvNo");
+
+                                lDlvNo.add(DlvNo);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (lDlvNo.size() > 0) {
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                (getActivity(), android.R.layout.select_dialog_item, lDlvNo);
+                        actDlvNo.setAdapter(adapter1);
+                        actDlvNo.setThreshold(1);
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "No Data Found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            dlDialog.dismiss();
+
         }
     }
 }

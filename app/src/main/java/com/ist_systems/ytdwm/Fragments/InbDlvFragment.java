@@ -3,6 +3,7 @@ package com.ist_systems.ytdwm.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,15 +13,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Activities.InbDlvRcvHUActivity;
 import com.ist_systems.ytdwm.Activities.InbDlvViewActivity;
+import com.ist_systems.ytdwm.Activities.IntWhseStocksInqMaterialActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
 import com.ist_systems.ytdwm.R;
 
@@ -35,6 +43,8 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InbDlvFragment extends Fragment {
 
@@ -46,6 +56,7 @@ public class InbDlvFragment extends Fragment {
 
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
+    List<String> lDlvNo = new ArrayList<>();
 
     String strCaller;
 
@@ -73,6 +84,8 @@ public class InbDlvFragment extends Fragment {
         btView = view.findViewById(R.id.btIDView);
         btRcvHU = view.findViewById(R.id.btIDRcvHU);
         imgSearch = view.findViewById(R.id.imgSearch);
+
+
 
         btPutAway.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +184,10 @@ public class InbDlvFragment extends Fragment {
             }
         });
 
+        new PHPGetAutoCompleteList().execute();
+
         return view;
+
     }
 
     @Override
@@ -336,6 +352,122 @@ public class InbDlvFragment extends Fragment {
             }
 
             dlDialog.dismiss();
+        }
+    }
+
+
+    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
+        Boolean bError = false;
+        String strMsg = "";
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String responseString = null;
+            String line;
+
+            try {
+                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
+                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("PassCode", "letmein");
+                jsonObject.put("sType", "IDDlvNo");
+                String message = jsonObject.toString();
+
+                Log.e("YTLog " + this.getClass().getSimpleName(), message);
+                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
+                os.write(message.getBytes());
+                os.flush();
+
+                InputStream is = urlConnection.getInputStream();
+                Reader reader = new InputStreamReader(is);
+                char[] buf = new char[GlobalVariables.gblBuffer];
+                int read;
+                StringBuffer sb = new StringBuffer();
+
+                while ((read = reader.read(buf)) > 0) {
+                    sb.append(buf, 0, read);
+                }
+
+                is.close();
+                urlConnection.disconnect();
+
+                responseString = sb.toString();
+            } catch (Exception e) {
+                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
+
+                bError = true;
+                strMsg = e.toString();
+            }
+
+            return responseString;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            dlDialog = ProgressDialog.show(getActivity(), "Please wait", "Fetching data...");
+        }
+
+        @Override
+        protected void onPostExecute(String resString) {
+            super.onPostExecute(resString);
+
+            if (bError) {
+
+                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
+                    strMsg = "Network Connection Failed.";
+
+                alrtLog = new AlertDialog.Builder(getActivity()).setMessage(strMsg)
+                        .setNegativeButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                        .show();
+            } else {
+                if (resString != null) {
+                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(resString);
+                        String DlvNo;
+
+                        if (!jsonResponse.getString("DlvNo").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("DlvNo");
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                DlvNo = jsonChildNode.optString("DlvNo");
+
+                                lDlvNo.add(DlvNo);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (lDlvNo.size() > 0) {
+                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                (getActivity(), android.R.layout.select_dialog_item, lDlvNo);
+                        actDlvNo.setAdapter(adapter1);
+                        actDlvNo.setThreshold(1);
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "No Data Found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            dlDialog.dismiss();
+
         }
     }
 }

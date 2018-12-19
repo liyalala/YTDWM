@@ -22,6 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,7 +61,7 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
     private static int sessionDepth = 0;
     AlertDialog alrtLog;
     ProgressDialog dlDialog;
-    EditText etBinCd;
+    AutoCompleteTextView etBinCd;
     EditText etHU;
     EditText etHLHU;
     Button btConfirmTO;
@@ -72,6 +75,7 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
     Boolean onDeleteMode = false;
     Boolean destroy = true;
     List<Map<String, String>> listMap;
+    List<String> lBin = new ArrayList<>();
     SharedPreferences prefs;
     private SimpleAdapter adapter = null;
     private List<BarcodeListPutAway> listBarcode = new ArrayList<>();
@@ -138,6 +142,7 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     strScanObj = "BinCd";
+
                 }
             }
         });
@@ -147,6 +152,8 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE
                         || event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    InbDlvPutAwayActivity.this.getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
                     strScanItem = etBinCd.getText().toString();
                     DoScan();
@@ -229,6 +236,8 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
         });
 
         new PHPOnloadPutAway().execute();
+        //new PHPGetAutoCompleteList().execute();
+
         /*if ((new CheckNetwork(InbDlvPutAwayActivity.this)).isConnectingToInternet()) {
             new PHPOnloadPutAway().execute();
         } else {
@@ -1405,4 +1414,7 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
 }
