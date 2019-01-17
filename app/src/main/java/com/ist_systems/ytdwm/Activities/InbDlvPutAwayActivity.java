@@ -656,8 +656,7 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
                     jObjectList.put("TONo", strTONo);
                     jObjectList.put("UserId", GlobalVariables.gblUserID);
                     jObjectList.put("DeviceId", GlobalVariables.gblDeviceName);
-                    jObjectList.put("PassCode", "letmein");
-                    jObjectList.put("sType", "PutAwayBin");
+
 
                     String message = jObjectList.toString();
                     Log.e("YTLog " + this.getClass().getSimpleName(), message);
