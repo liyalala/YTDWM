@@ -24,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,7 +66,7 @@ public class InbDlvPutAwayPerContActivity extends AppCompatActivity {
     TextInputLayout tilBin;
     TextInputLayout tilNewHUID;
     TextInputLayout tilHUID;
-    EditText etBinCd;
+    AutoCompleteTextView etBinCd;
     EditText etHU;
     EditText etHLHU;
     Button btConfirmTO;
@@ -79,6 +81,7 @@ public class InbDlvPutAwayPerContActivity extends AppCompatActivity {
     Boolean onDeleteMode = false;
     Boolean destroy = true;
     List<Map<String, String>> listMap;
+    List<String> lBin = new ArrayList<>();
     SharedPreferences prefs;
     private SimpleAdapter adapter = null;
     private List<BarcodeListPutAway> listBarcode = new ArrayList<>();
@@ -653,6 +656,8 @@ public class InbDlvPutAwayPerContActivity extends AppCompatActivity {
                     JSONObject jObjectList = new JSONObject();
                     jObjectList.put("ContVessel", strContVessel);
                     jObjectList.put("UserId", GlobalVariables.gblUserID);
+                    jObjectList.put("PassCode", "letmein");
+                    jObjectList.put("sType", "PutAwayBin");
 
                     String message = jObjectList.toString();
                     Log.e("YTLog " + this.getClass().getSimpleName(), message);
@@ -759,6 +764,25 @@ public class InbDlvPutAwayPerContActivity extends AppCompatActivity {
                                 addtoBarcodeList(listBarcode, HLHUID, DstHUID, "HU");
                                 addToListView();
                             }
+                        }
+
+                        if (!jsonResponse.getString("BinCd").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
+                            String BinCd;
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                BinCd = jsonChildNode.optString("BinCd");
+
+                                lBin.add(BinCd);
+                            }
+                        }
+
+                        if (lBin.size() > 0) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                    (InbDlvPutAwayPerContActivity.this, android.R.layout.select_dialog_item, lBin);
+                            etBinCd.setAdapter(adapter1);
+                            etBinCd.setThreshold(1);
                         }
 
                     } catch (JSONException e) {

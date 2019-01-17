@@ -19,7 +19,7 @@
             android:layout_width="617dp"
             android:layout_height="121dp"
             android:layout_gravity="center_vertical|center_horizontal|center"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             android:textAlignment="center"
             app:srcCompat="@drawable/warehouse_connect_new" />
     </LinearLayout>
@@ -85,11 +85,11 @@
     <com.andrognito.patternlockview.PatternLockView
         android:id="@+id/patternView"
         android:layout_width="wrap_content"
-        android:layout_height="205dp"
+        android:layout_height="170dp"
         android:layout_gravity="fill"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         app:normalStateColor="@color/colorBlack" />
 
     <LinearLayout

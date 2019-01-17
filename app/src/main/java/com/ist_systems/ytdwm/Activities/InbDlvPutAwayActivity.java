@@ -656,6 +656,8 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
                     jObjectList.put("TONo", strTONo);
                     jObjectList.put("UserId", GlobalVariables.gblUserID);
                     jObjectList.put("DeviceId", GlobalVariables.gblDeviceName);
+                    jObjectList.put("PassCode", "letmein");
+                    jObjectList.put("sType", "PutAwayBin");
 
                     String message = jObjectList.toString();
                     Log.e("YTLog " + this.getClass().getSimpleName(), message);
@@ -778,6 +780,25 @@ public class InbDlvPutAwayActivity extends AppCompatActivity {
                                 addtoBarcodeList1(listBarcode, HLHUID, DstHUID, "HU");
                                 addToListView();
                             }
+                        }
+
+                        if (!jsonResponse.getString("BinCd").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
+                            String BinCd;
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                BinCd = jsonChildNode.optString("BinCd");
+
+                                lBin.add(BinCd);
+                            }
+                        }
+
+                        if (lBin.size() > 0) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                    (InbDlvPutAwayActivity.this, android.R.layout.select_dialog_item, lBin);
+                            etBinCd.setAdapter(adapter1);
+                            etBinCd.setThreshold(1);
                         }
 
                     } catch (JSONException e) {

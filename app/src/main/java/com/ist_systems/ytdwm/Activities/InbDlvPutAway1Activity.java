@@ -731,6 +731,8 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                     jObjectList.put("TONo", strTONo);
                     jObjectList.put("UserId", GlobalVariables.gblUserID);
                     jObjectList.put("DeviceId", GlobalVariables.gblDeviceName);
+                    jObjectList.put("PassCode", "letmein");
+                    jObjectList.put("sType", "PutAwayBin");
 
                     String message = jObjectList.toString();
                     Log.e("YTLog " + this.getClass().getSimpleName(), message);
@@ -817,6 +819,8 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
 
                     try {
                         JSONObject jsonResponse = new JSONObject(resString);
+
+
                         if (!jsonResponse.getString("CheckLock").equals("null")) {
                             JSONArray jsonMainNode = jsonResponse.optJSONArray("CheckLock");
                             JSONObject jsonChildNode = jsonMainNode.getJSONObject(0);
@@ -855,6 +859,25 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                             }
                         }
 
+                        if (!jsonResponse.getString("BinCd").equals("null")) {
+                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
+                            String BinCd;
+
+                            for (int i = 0; i < jsonMainNode.length(); i++) {
+                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                                BinCd = jsonChildNode.optString("BinCd");
+
+                                lBin.add(BinCd);
+                            }
+                        }
+
+                        if (lBin.size() > 0) {
+                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                    (InbDlvPutAway1Activity.this, android.R.layout.select_dialog_item, lBin);
+                            etBinCd.setAdapter(adapter1);
+                            etBinCd.setThreshold(1);
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -890,7 +913,7 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
                 Log.e("YTLog " + this.getClass().getSimpleName(), e.toString());
 
             }
-            new PHPGetAutoCompleteList().execute();
+
         }
 
     }
@@ -1498,122 +1521,6 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
     }
 
 
-    private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
-        Boolean bError = false;
-        String strMsg = "";
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            String responseString = null;
-            String line;
-
-            try {
-                URL url = new URL(GlobalVariables.gblURL + "GetAutoComplete.php");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setConnectTimeout(GlobalVariables.gblTimeOut);
-                urlConnection.setReadTimeout(GlobalVariables.gblReadTime);
-
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("PassCode", "letmein");
-                jsonObject.put("sType", "PutAwayBin");
-                String message = jsonObject.toString();
-
-                Log.e("YTLog " + this.getClass().getSimpleName(), message);
-                OutputStream os = new BufferedOutputStream(urlConnection.getOutputStream());
-                os.write(message.getBytes());
-                os.flush();
-
-                InputStream is = urlConnection.getInputStream();
-                Reader reader = new InputStreamReader(is);
-                char[] buf = new char[GlobalVariables.gblBuffer];
-                int read;
-                StringBuffer sb = new StringBuffer();
-
-                while ((read = reader.read(buf)) > 0) {
-                    sb.append(buf, 0, read);
-                }
-
-                is.close();
-                urlConnection.disconnect();
-
-                responseString = sb.toString();
-            } catch (Exception e) {
-                Log.e("YTLog " + this.getClass().getSimpleName(), "Network: " + e.toString());
-
-                bError = true;
-                strMsg = e.toString();
-            }
-
-            return responseString;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            dlDialog = ProgressDialog.show(InbDlvPutAway1Activity.this, "Please wait", "Fetching data...");
-        }
-
-        @Override
-        protected void onPostExecute(String resString) {
-            super.onPostExecute(resString);
-
-            if (bError) {
-
-                if (strMsg.contains("Timeout") || strMsg.contains("Connect"))
-                    strMsg = "Network Connection Failed.";
-
-                alrtLog = new AlertDialog.Builder(InbDlvPutAway1Activity.this).setMessage(strMsg)
-                        .setNegativeButton("Ok",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                    }
-                                })
-                        .show();
-            } else {
-                if (resString != null) {
-                    Log.e("YTLog " + this.getClass().getSimpleName(), resString);
-
-                    try {
-                        JSONObject jsonResponse = new JSONObject(resString);
-                        String BinCd;
-
-                        if (!jsonResponse.getString("BinCd").equals("null")) {
-                            JSONArray jsonMainNode = jsonResponse.optJSONArray("BinCd");
-
-                            for (int i = 0; i < jsonMainNode.length(); i++) {
-                                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
-                                BinCd = jsonChildNode.optString("BinCd");
-
-                                lBin.add(BinCd);
-                            }
-                        }
-
-                        if (lBin.size() > 0) {
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
-                                    (InbDlvPutAway1Activity.this, android.R.layout.select_dialog_item, lBin);
-                            etBinCd.setAdapter(adapter1);
-                            etBinCd.setThreshold(1);
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                } else {
-                    Toast.makeText(InbDlvPutAway1Activity.this, "No Data Found.", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            dlDialog.dismiss();
-
-        }
-    }
 
 
 
