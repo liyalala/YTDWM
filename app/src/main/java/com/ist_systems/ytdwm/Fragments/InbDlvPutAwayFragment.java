@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Activities.InbDlvPutAway1Activity;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteCustomAdapter;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteView;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -305,6 +307,7 @@ public class InbDlvPutAwayFragment extends Fragment {
     private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
         Boolean bError = false;
         String strMsg = "";
+        List<AutoCompleteView> phpList = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... strings) {
@@ -392,7 +395,8 @@ public class InbDlvPutAwayFragment extends Fragment {
                                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                                 TONo = jsonChildNode.optString("TONo");
 
-                                lTONo.add(TONo);
+                                //lTONo.add(TONo);
+                                phpList.add(new AutoCompleteView(TONo));
                             }
                         }
 
@@ -400,10 +404,21 @@ public class InbDlvPutAwayFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    if (lTONo.size() > 0) {
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                    //if (lTONo.size() > 0) {
+                    if (phpList.size() > 0) {
+                        /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                                 (getActivity(), android.R.layout.select_dialog_item, lTONo);
                         actIDTONoSearch.setAdapter(adapter1);
+                        actIDTONoSearch.setThreshold(1);*/
+
+                        Log.e("YTLog " + this.getClass().getSimpleName(), "IM NOT EMPTY");
+
+                        AutoCompleteCustomAdapter customAdapter = new AutoCompleteCustomAdapter(
+                                getActivity(),
+                                0,
+                                phpList
+                        );
+                        actIDTONoSearch.setAdapter(customAdapter);
                         actIDTONoSearch.setThreshold(1);
                     }
 

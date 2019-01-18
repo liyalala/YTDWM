@@ -25,6 +25,8 @@ import com.ist_systems.ytdwm.Activities.OutDlvPickAccFreeActivity;
 import com.ist_systems.ytdwm.Activities.OutDlvPickFabDirActivity;
 import com.ist_systems.ytdwm.Activities.OutDlvPickFabFreeActivity;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteCustomAdapter;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteView;
 import com.ist_systems.ytdwm.R;
 
 import org.json.JSONArray;
@@ -330,6 +332,7 @@ public class OutDlvPickingFragment extends Fragment {
     private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
         Boolean bError = false;
         String strMsg = "";
+        List<AutoCompleteView> phpList = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... strings) {
@@ -417,7 +420,8 @@ public class OutDlvPickingFragment extends Fragment {
                                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                                 TONo = jsonChildNode.optString("TONo");
 
-                                lTONo.add(TONo);
+                                //lTONo.add(TONo);
+                                phpList.add(new AutoCompleteView(TONo));
                             }
                         }
 
@@ -425,10 +429,21 @@ public class OutDlvPickingFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    if (lTONo.size() > 0) {
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                    //if (lTONo.size() > 0) {
+                    if (phpList.size() > 0) {
+                        /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                                 (getActivity(), android.R.layout.select_dialog_item, lTONo);
                         actTONo.setAdapter(adapter1);
+                        actTONo.setThreshold(1);*/
+
+                        Log.e("YTLog " + this.getClass().getSimpleName(), "IM NOT EMPTY");
+
+                        AutoCompleteCustomAdapter customAdapter = new AutoCompleteCustomAdapter(
+                                getActivity(),
+                                0,
+                                phpList
+                        );
+                        actTONo.setAdapter(customAdapter);
                         actTONo.setThreshold(1);
                     }
 

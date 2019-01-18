@@ -34,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteCustomAdapter;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteView;
 import com.ist_systems.ytdwm.ListViewAndAdapters.BinTransfer;
 import com.ist_systems.ytdwm.R;
 import com.ist_systems.ytdwm.Util;
@@ -966,6 +968,7 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
     private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
         Boolean bError = false;
         String strMsg = "";
+        List<AutoCompleteView> phpList = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... strings) {
@@ -1053,14 +1056,26 @@ public class IntWhseBinTransActivity extends AppCompatActivity {
                                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                                 BinCd = jsonChildNode.optString("BinCd");
 
-                                lBin.add(BinCd);
+                                //lBin.add(BinCd);
+                                phpList.add(new AutoCompleteView(BinCd));
                             }
                         }
 
-                        if (lBin.size() > 0) {
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                        //if (lBin.size() > 0) {
+                        if (phpList.size() > 0) {
+                            /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                                     (IntWhseBinTransActivity.this, android.R.layout.select_dialog_item, lBin);
                             etDestBin.setAdapter(adapter1);
+                            etDestBin.setThreshold(1);*/
+
+                            Log.e("YTLog " + this.getClass().getSimpleName(), "IM NOT EMPTY");
+
+                            AutoCompleteCustomAdapter customAdapter = new AutoCompleteCustomAdapter(
+                                    IntWhseBinTransActivity.this,
+                                    0,
+                                    phpList
+                            );
+                            etDestBin.setAdapter(customAdapter);
                             etDestBin.setThreshold(1);
                         }
 

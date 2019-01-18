@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.ist_systems.ytdwm.Fragments.SummaryFragment;
 import com.ist_systems.ytdwm.GlobalVariables;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteCustomAdapter;
+import com.ist_systems.ytdwm.ListViewAndAdapters.AutoCompleteView;
 import com.ist_systems.ytdwm.ListViewAndAdapters.StockInquiry;
 import com.ist_systems.ytdwm.ListViewAndAdapters.StockInquiryAdapter;
 import com.ist_systems.ytdwm.R;
@@ -287,6 +289,8 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
     private class PHPGetAutoCompleteList extends AsyncTask<String, Void, String> {
         Boolean bError = false;
         String strMsg = "";
+        List<AutoCompleteView> phpList = new ArrayList<>();
+        List<AutoCompleteView> phplist2 = new ArrayList<>();
 
         @Override
         protected String doInBackground(String... strings) {
@@ -374,7 +378,8 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
                                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                                 ADMatId = jsonChildNode.optString("Ad_Mat_Id");
 
-                                lADMatId.add(ADMatId);
+                                //lADMatId.add(ADMatId);
+                                phpList.add(new AutoCompleteView(ADMatId));
                             }
                         }
 
@@ -385,26 +390,49 @@ public class IntWhseStocksInqMaterialActivity extends AppCompatActivity {
                                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
                                 Batch = jsonChildNode.optString("Batch");
 
-                                lBatch.add(Batch);
+                                //lBatch.add(Batch);
+                                phplist2.add(new AutoCompleteView(Batch));
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    if (lADMatId.size() > 0) {
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                    //if (lADMatId.size() > 0) {
+                    if (phpList.size() > 0) {
+                        /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                                 (IntWhseStocksInqMaterialActivity.this, android.R.layout.select_dialog_item, lADMatId);
                         etMatNo.setAdapter(adapter1);
+                        etMatNo.setThreshold(1);*/
+
+                        Log.e("YTLog " + this.getClass().getSimpleName(), "IM NOT EMPTY");
+
+                        AutoCompleteCustomAdapter customAdapter = new AutoCompleteCustomAdapter(
+                                IntWhseStocksInqMaterialActivity.this,
+                                0,
+                                phpList);
+
+                        etMatNo.setAdapter(customAdapter);
                         etMatNo.setThreshold(1);
                     }
 
-                    if (lBatch.size() > 0) {
-                        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
-                                (IntWhseStocksInqMaterialActivity.this, android.R.layout.select_dialog_item, lBatch);
-                        etBatch.setAdapter(adapter1);
+                    //if (lBatch.size() > 0) {
+                    if (phplist2.size() > 0) {
+                        /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
+                                (IntWhseStocksInqMaterialActivity.this, android.R.layout.select_dialog_item, lADMatId);
+                        etMatNo.setAdapter(adapter1);
+                        etMatNo.setThreshold(1);*/
+
+                        Log.e("YTLog " + this.getClass().getSimpleName(), "IM NOT EMPTY");
+
+                        AutoCompleteCustomAdapter customAdapter = new AutoCompleteCustomAdapter(
+                                IntWhseStocksInqMaterialActivity.this,
+                                0,
+                                phplist2);
+                        etBatch.setAdapter(customAdapter);
                         etBatch.setThreshold(1);
                     }
+
                 } else {
                     Toast.makeText(IntWhseStocksInqMaterialActivity.this, "No Data Found.", Toast.LENGTH_LONG).show();
                 }
