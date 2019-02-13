@@ -226,21 +226,40 @@ public class InbDlvPutAway1Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int iTotalHUScanned = listBarcode.size();
+                int withBinCd = 0;
+                int noBinCd = 0;
+
+                for (BarcodeListPutAway barcode : listBarcode) {
+                    if (barcode.getBinCd().equals("")) {
+                        noBinCd++;
+                    }
+
+                    if (!barcode.getBinCd().equals("")) {
+                        withBinCd++;
+                    }
+                }
 
                 if (iTotalHUScanned > 0) {
-                    new PHPConfirmTO().execute();
-                    /*if ((new CheckNetwork(InbDlvPutAway1Activity.this)).isConnectingToInternet()) {
-                        new PHPConfirmTO().execute();
-                    } else {
-                        alrtLog = new AlertDialog.Builder(InbDlvPutAway1Activity.this).setMessage("Network Connection failed.")
-                                .setNegativeButton("Ok",
+                    if (withBinCd > 0 && noBinCd > 0){
+                        alrtLog = new AlertDialog.Builder(InbDlvPutAway1Activity.this).setMessage("Not all items were scanned, continue and split?")
+                                .setPositiveButton("Yes",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                new PHPConfirmTO().execute();
+                                            }
+                                        })
+                                .setNegativeButton("No",
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
                                             }
                                         })
                                 .show();
-                    }*/
+                    }
+                    else if (withBinCd > 0 && noBinCd == 0) {
+                        new PHPConfirmTO().execute();
+                    }
                 }
             }
         });
